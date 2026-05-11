@@ -5,6 +5,7 @@
 ### I. Note
 
 1. Cần thực hiện "narrowing" (thu hẹp kiểu) bằng các câu lệnh điều kiện (như typeof) trước khi sử dụng các phương thức đặc thù của từng kiểu
+2. `const enum` không gen code ra file js, sử dụng khi cần tối ưu kích thước file và không cần truy cập runtime
 
 ### II. Overloading
 1. Khai báo các dạng thức của hàm
@@ -125,6 +126,36 @@ type LazyPerson = Getters<Person>;
 //     getAge: () => number;
 //     getLocation: () => string;
 // }
+```
+
+### VIII. Decorators
+```js
+// 1. Định nghĩa Decorator
+function Report(target: any, context: ClassMethodDecoratorContext) {
+    const methodName = String(context.name);
+    
+    // Trả về hàm mới bọc lấy hàm cũ
+    return function (this: any, ...args: any[]) {
+        console.log(`[LOG] Đang gọi hàm: ${methodName}`);
+        return target.call(this, ...args); // Thực thi hàm gốc
+    };
+}
+
+// 2. Sử dụng Decorator
+class MyApp {
+    @Report
+    saveData(data: string) {
+        console.log(`Đang lưu dữ liệu: ${data}`);
+    }
+}
+
+// 3. Chạy thử
+const app = new MyApp();
+app.saveData("Thông tin đơn hàng"); 
+
+// Output:
+// [LOG] Đang gọi hàm: saveData
+// Đang lưu dữ liệu: Thông tin đơn hàng
 ```
 
 ---
