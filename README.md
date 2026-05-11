@@ -67,6 +67,27 @@ type IsArray<T> = T extends Array<infer U> ? U : never;
 type ArrayExample = IsArray<number[]>; // number
 ```
 
+### VII. Mapped Types
+```js
+type Getters<Type> = {
+    [Property in keyof Type as `get${Capitalize<string & Property>}`]: () => Type[Property]
+};
+ 
+interface Person {
+    name: string;
+    age: number;
+    location: string;
+}
+ 
+type LazyPerson = Getters<Person>;
+// Kết quả:
+// type LazyPerson = {
+//     getName: () => string;
+//     getAge: () => number;
+//     getLocation: () => string;
+// }
+```
+
 ---
 ## TS Configurations
 1. --noEmitOnError: Chặn hành vi gen file js khi lỗi kiểu
