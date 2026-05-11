@@ -19,6 +19,20 @@ function reverse(s: string | string[]): string | string[] {
   }
 }
 ```
+
+### III. Index Signatures
+1. `[index: string]: number;`
+
+### IV. Keyof Type Operator
+1. `keyof`: lấy một kiểu đối tượng và tạo ra một Union của các tên thuộc tính (keys) của đối tượng đó
+```js
+type Person = {
+    name: string;
+    age: number;
+}
+type K = keyof Person; // "name" | "age"
+```
+
 ---
 ## TS Configurations
 1. --noEmitOnError: Chặn hành vi gen file js khi lỗi kiểu
