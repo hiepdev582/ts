@@ -9,7 +9,7 @@
 
 ### II. Overloading
 1. Khai báo các dạng thức của hàm
-```js
+```ts
 function reverse(s: string): string;
 function reverse(s: string[]): string[];
 function reverse(s: string | string[]): string | string[] {
@@ -26,7 +26,7 @@ function reverse(s: string | string[]): string | string[] {
 
 ### IV. Keyof Type Operator
 1. `keyof`: lấy một kiểu đối tượng và tạo ra một Union của các tên thuộc tính (keys) của đối tượng đó
-```js
+```ts
 type Person = {
     name: string;
     age: number;
@@ -34,21 +34,21 @@ type Person = {
 type K = keyof Person; // "name" | "age"
 ```
 2. Kết hợp `typeof` với `keyof`
-```js
+```ts
 const Colors = { red: "#ff0000", blue: "#0000ff" };
 type ColorKeys = keyof typeof Colors; // "red" | "blue"
 ```
 
 ### V. Types
 1. `ReturnType<T>`: Lấy kiểu trả về của một hàm
-```js
+```ts
 function add(a: number, b: number) {
     return a + b;
 }
 type AddReturnType = ReturnType<typeof add>; // number
 ```
 2. `Parameters<Type>`: Lấy kiểu tham số của một hàm
-```js
+```ts
 function add(a: number, b: number) {
     return a + b;
 }
@@ -56,7 +56,7 @@ type AddParameters = Parameters<typeof add>; // [number, number]
 ```
 3. `Awaited<Type>`: Lấy kiểu của giá trị được return bởi một Promise (hoặc Union của các Promise).
 4. `InstanceType<T>`: Lấy kiểu thực thể của một class
-```js
+```ts
 class Person {
     name: string;
     age: number;
@@ -72,7 +72,7 @@ type PersonInstance = InstanceType<typeof Person>; // Person
 7. `Required<Type>`: Tạo ra một kiểu mới với tất cả các thuộc tính của `Type` là `required`
 8. `Readonly<Type>`: Tạo ra một kiểu mới với tất cả các thuộc tính của `Type` là `readonly`
 9. `Pick<Type, Keys>`: Tạo ra một kiểu mới với các thuộc tính của `Type` được chọn bởi `Keys`
-```js
+```ts
 type PickPerson = Pick<Person, "name" | "age">;
 // Kết quả:
 // type PickPerson = {
@@ -81,7 +81,7 @@ type PickPerson = Pick<Person, "name" | "age">;
 // }
 ```
 10. `Omit<Type, Keys>`: Loại bỏ các thuộc tính của `Type` được chọn bởi `Keys`
-```js
+```ts
 type OmitPerson = Omit<Person, "name" | "age">;
 // Kết quả:
 // type OmitPerson = {
@@ -91,7 +91,7 @@ type OmitPerson = Omit<Person, "name" | "age">;
 11. `Exclude<UnionType, ExcludedMembers>`: Loại bỏ các kiểu dữ liệu cụ thể ra khỏi một Union Type
 12. `Extract<UnionType, ExtractMembers>`: Chỉ lấy ra những kiểu dữ liệu có mặt trong cả hai Union
 13. `Record<Keys, Type>`: Tạo ra một kiểu mới với các thuộc tính được chọn bởi `Keys`
-```js
+```ts
 type RecordPerson = Record<"name" | "age", string>;
 // Kết quả:
 // type RecordPerson = {
@@ -102,13 +102,13 @@ type RecordPerson = Record<"name" | "age", string>;
 
 ### VI. Infer
 1. `infer`: Chỉ dùng bên trong vế `extends` của một `Conditional Type`
-```js
+```ts
 type IsArray<T> = T extends Array<infer U> ? U : never;
 type ArrayExample = IsArray<number[]>; // number
 ```
 
 ### VII. Mapped Types
-```js
+```ts
 type Getters<Type> = {
     [Property in keyof Type as `get${Capitalize<string & Property>}`]: () => Type[Property]
 };
@@ -129,7 +129,7 @@ type LazyPerson = Getters<Person>;
 ```
 
 ### VIII. Decorators
-```js
+```ts
 // 1. Định nghĩa Decorator
 function Report(target: any, context: ClassMethodDecoratorContext) {
     const methodName = String(context.name);
@@ -156,6 +156,20 @@ app.saveData("Thông tin đơn hàng");
 // Output:
 // [LOG] Đang gọi hàm: saveData
 // Đang lưu dữ liệu: Thông tin đơn hàng
+```
+
+### IX. Mixins
+```ts
+type Constructor = new (...args: any[]) => {};
+
+function Scale<TBase extends Constructor>(Base: TBase) {
+  return class extends Base {
+    _scale = 1;
+    setScale(scale: number) {
+      this._scale = scale;
+    }
+  };
+}
 ```
 
 ---
