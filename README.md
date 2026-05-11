@@ -213,3 +213,24 @@ function Scale<TBase extends Constructor>(Base: TBase) {
 3. **Linting/Formatting**: ESLint, Prettier, Stylelint
 4. **Documentation**: TypeDoc, Storybook
 5. **Performance**: Web Vitals, Lighthouse
+
+---
+
+## Declaration Files & Module Augmentation
+
+- **Viết file `.d.ts` cho thư viện cũ:** Khi bạn dùng một thư viện JS cũ từ npm mà không có `@types`, bạn phải tạo một file `typing.d.ts` và khai báo `declare module 'old-library-name' { ... }`.
+- **Module Augmentation:** Ví dụ, bạn đang dùng **Express** và muốn gắn thêm thông tin `user` vào đối tượng `Request` sau khi qua Middleware xác thực:
+
+```typescript
+// Trong file types/express.d.ts
+import { User } from "../models/user";
+
+declare global {
+  namespace Express {
+    interface Request {
+      currentUser?: User; // Thêm thuộc tính mới vào interface có sẵn của Express
+    }
+  }
+}
+/// Bây giờ, trong Controller, bạn có thể gọi `req.currentUser` mà không bị báo lỗi đỏ.
+```
