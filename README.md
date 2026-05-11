@@ -46,7 +46,15 @@ function add(a: number, b: number) {
 }
 type AddReturnType = ReturnType<typeof add>; // number
 ```
-2. `InstanceType<T>`: Lấy kiểu thực thể của một class
+2. `Parameters<Type>`: Lấy kiểu tham số của một hàm
+```js
+function add(a: number, b: number) {
+    return a + b;
+}
+type AddParameters = Parameters<typeof add>; // [number, number]
+```
+3. `Awaited<Type>`: Lấy kiểu của giá trị được return bởi một Promise (hoặc Union của các Promise).
+4. `InstanceType<T>`: Lấy kiểu thực thể của một class
 ```js
 class Person {
     name: string;
@@ -58,7 +66,38 @@ class Person {
 }
 type PersonInstance = InstanceType<typeof Person>; // Person
 ```
-3. `NonNullable<T>`: Loại bỏ `null` và `undefined` khỏi một kiểu
+5. `NonNullable<T>`: Loại bỏ `null` và `undefined` khỏi một kiểu
+6. `Partial<Type>`: Tạo ra một kiểu mới với tất cả các thuộc tính của `Type` là `optional`
+7. `Required<Type>`: Tạo ra một kiểu mới với tất cả các thuộc tính của `Type` là `required`
+8. `Readonly<Type>`: Tạo ra một kiểu mới với tất cả các thuộc tính của `Type` là `readonly`
+9. `Pick<Type, Keys>`: Tạo ra một kiểu mới với các thuộc tính của `Type` được chọn bởi `Keys`
+```js
+type PickPerson = Pick<Person, "name" | "age">;
+// Kết quả:
+// type PickPerson = {
+//     name: string;
+//     age: number;
+// }
+```
+10. `Omit<Type, Keys>`: Loại bỏ các thuộc tính của `Type` được chọn bởi `Keys`
+```js
+type OmitPerson = Omit<Person, "name" | "age">;
+// Kết quả:
+// type OmitPerson = {
+//     location: string;
+// }
+```
+11. `Exclude<UnionType, ExcludedMembers>`: Loại bỏ các kiểu dữ liệu cụ thể ra khỏi một Union Type
+12. `Extract<UnionType, ExtractMembers>`: Chỉ lấy ra những kiểu dữ liệu có mặt trong cả hai Union
+13. `Record<Keys, Type>`: Tạo ra một kiểu mới với các thuộc tính được chọn bởi `Keys`
+```js
+type RecordPerson = Record<"name" | "age", string>;
+// Kết quả:
+// type RecordPerson = {
+//     name: string;
+//     age: string;
+// }
+```
 
 ### VI. Infer
 1. `infer`: Chỉ dùng bên trong vế `extends` của một `Conditional Type`
